@@ -6,6 +6,7 @@ import (
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	ecs "github.com/alibabacloud-go/ecs-20140526/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
+	//util "github.com/alibabacloud-go/tea-utils/v2/service"
 )
 
 func CreateClient() (_result *ecs.Client, _err error) {
@@ -17,6 +18,7 @@ func CreateClient() (_result *ecs.Client, _err error) {
 	}
 	// Endpoint 请参考 https://api.aliyun.com/product/Ecs
 	config.Endpoint = tea.String("ecs.cn-hangzhou.aliyuncs.com")
+
 	_result = &ecs.Client{}
 	_result, _err = ecs.NewClient(config)
 	return _result, _err
