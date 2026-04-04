@@ -6,6 +6,7 @@ require (
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.15
 	github.com/alibabacloud-go/ecs-20140526/v4 v4.26.10
 	github.com/alibabacloud-go/tea v1.4.0
+	golang.org/x/crypto v0.49.0
 )
 
 require (
@@ -21,5 +22,6 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/tjfoc/gmsm v1.4.1 // indirect
 	golang.org/x/net v0.52.0 // indirect
+	golang.org/x/sys v0.42.0 // indirect
 	gopkg.in/ini.v1 v1.67.1 // indirect
 )

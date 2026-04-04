@@ -159,7 +159,12 @@ func DeleteInstance(client *ecs.Client, instanceId string) error {
 }
 
 func DescribeInstanceStatus(client *ecs.Client, instanceId string) (string, error) {
+	regionId := getenvAny("ALIBABA_CLOUD_REGION_ID", "ALICLOUD_REGION_ID")
+	if regionId == "" {
+		regionId = "cn-hangzhou"
+	}
 	request := &ecs.DescribeInstancesRequest{
+		RegionId:    tea.String(regionId),
 		InstanceIds: tea.String(fmt.Sprintf("[\"%s\"]", instanceId)),
 	}
 	response, err := client.DescribeInstances(request)
