@@ -3,11 +3,22 @@ package aliyun
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	ecs "github.com/alibabacloud-go/ecs-20140526/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
 )
+
+type CreateInstanceOptions struct {
+	RegionID           string
+	ZoneID             string
+	ImageID            string
+	InstanceType       string
+	SystemDiskCategory string
+	SecurityGroupID    string
+	VSwitchID          string
+}
 
 func getenvAny(keys ...string) string {
 	for _, k := range keys {
@@ -116,6 +127,65 @@ func DescribeSystemDiskCategories(client *ecs.Client, instanceType string, zoneI
 
 // 根据镜像ID创建实例
 func CreateInstance(client *ecs.Client, imageId string, instanceType string, zoneId string, systemDiskCategory string) (string, error) {
+	regionID := getenvAny("ALIBABA_CLOUD_REGION_ID", "ALICLOUD_REGION_ID")
+	if regionID == "" {
+		regionID = "cn-hangzhou"
+	}
+	securityGroupID := getenvAny("ALIBABA_CLOUD_SECURITY_GROUP_ID", "ALICLOUD_SECURITY_GROUP_ID")
+	if securityGroupID == "" {
+		securityGroupID = "sg-bp104szh7za9nkpwpuyl"
+	}
+	vSwitchID := getenvAny("ALIBABA_CLOUD_VSWITCH_ID", "ALICLOUD_VSWITCH_ID")
+	if vSwitchID == "" {
+		vSwitchID = "vsw-bp1eryqa4uwa037jht3le"
+	}
+
+	return CreateInstanceWithOptions(client, CreateInstanceOptions{
+		RegionID:           regionID,
+		ZoneID:             zoneId,
+		ImageID:            imageId,
+		InstanceType:       instanceType,
+		SystemDiskCategory: systemDiskCategory,
+		SecurityGroupID:    securityGroupID,
+		VSwitchID:          vSwitchID,
+	})
+}
+
+func CreateInstanceWithOptions(client *ecs.Client, opts CreateInstanceOptions) (string, error) {
+	regionID := strings.TrimSpace(opts.RegionID)
+	if regionID == "" {
+		regionID = getenvAny("ALIBABA_CLOUD_REGION_ID", "ALICLOUD_REGION_ID")
+	}
+	if regionID == "" {
+		regionID = "cn-hangzhou"
+	}
+
+	request := &ecs.CreateInstanceRequest{
+		RegionId:     tea.String(regionID),
+		ZoneId:       tea.String(opts.ZoneID),
+		ImageId:      tea.String(opts.ImageID),
+		InstanceType: tea.String(opts.InstanceType),
+		SystemDisk: &ecs.CreateInstanceRequestSystemDisk{
+			Category: tea.String(opts.SystemDiskCategory),
+		},
+	}
+
+	if strings.TrimSpace(opts.SecurityGroupID) != "" {
+		request.SecurityGroupId = tea.String(opts.SecurityGroupID)
+	}
+	if strings.TrimSpace(opts.VSwitchID) != "" {
+		request.VSwitchId = tea.String(opts.VSwitchID)
+	}
+
+	response, err := client.CreateInstance(request)
+	if err != nil {
+		return "", err
+	}
+	return tea.StringValue(response.Body.InstanceId), nil
+}
+
+// 根据镜像ID创建实例
+func CreateInstanceDeprecated(client *ecs.Client, imageId string, instanceType string, zoneId string, systemDiskCategory string) (string, error) {
 	request := &ecs.CreateInstanceRequest{
 		RegionId:     tea.String("cn-hangzhou"),
 		ZoneId:       tea.String(zoneId),
