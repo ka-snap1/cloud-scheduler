@@ -1,0 +1,11 @@
+profiles:
+  - name: test-aliyun-gpu
+    provider: aliyun
+    region_id: cn-hangzhou
+    zone_id: cn-hangzhou-h
+    network:
+      security_group_id: sg-bp104szh7za9nkpwpuyl
+      vswitch_id: vsw-bp1eryqa4uwa037jht3le
+    ssh:
+      user: root
+      port: 22

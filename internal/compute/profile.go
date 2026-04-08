@@ -7,30 +7,30 @@ import (
 )
 
 type Profile struct {
-	Name      string            `json:"name"`
-	Provider  string            `json:"provider"`
-	RegionID  string            `json:"region_id,omitempty"`
-	ZoneID    string            `json:"zone_id,omitempty"`
-	Resources ResourceProfile   `json:"resources"`
-	Network   NetworkProfile    `json:"network"`
-	SSH       SSHProfile        `json:"ssh"`
-	Labels    map[string]string `json:"labels,omitempty"`
+	Name      string            `json:"name" yaml:"name"`
+	Provider  string            `json:"provider" yaml:"provider"`
+	RegionID  string            `json:"region_id,omitempty" yaml:"region_id,omitempty"`
+	ZoneID    string            `json:"zone_id,omitempty" yaml:"zone_id,omitempty"`
+	Resources ResourceProfile   `json:"resources" yaml:"resources"`
+	Network   NetworkProfile    `json:"network" yaml:"network"`
+	SSH       SSHProfile        `json:"ssh" yaml:"ssh"`
+	Labels    map[string]string `json:"labels,omitempty" yaml:"labels,omitempty"`
 }
 
 type ResourceProfile struct {
-	InstanceType       string `json:"instance_type,omitempty"`
-	ImageID            string `json:"image_id,omitempty"`
-	SystemDiskCategory string `json:"system_disk_category,omitempty"`
+	InstanceType       string `json:"instance_type,omitempty" yaml:"instance_type,omitempty"`
+	ImageID            string `json:"image_id,omitempty" yaml:"image_id,omitempty"`
+	SystemDiskCategory string `json:"system_disk_category,omitempty" yaml:"system_disk_category,omitempty"`
 }
 
 type NetworkProfile struct {
-	SecurityGroupID string `json:"security_group_id,omitempty"`
-	VSwitchID       string `json:"vswitch_id,omitempty"`
+	SecurityGroupID string `json:"security_group_id,omitempty" yaml:"security_group_id,omitempty"`
+	VSwitchID       string `json:"vswitch_id,omitempty" yaml:"vswitch_id,omitempty"`
 }
 
 type SSHProfile struct {
-	User string `json:"user,omitempty"`
-	Port int    `json:"port,omitempty"`
+	User string `json:"user,omitempty" yaml:"user,omitempty"`
+	Port int    `json:"port,omitempty" yaml:"port,omitempty"`
 }
 
 func (p *Profile) Validate() error {

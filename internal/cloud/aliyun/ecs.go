@@ -91,13 +91,22 @@ func DescribeSystemDiskCategories(client *ecs.Client, instanceType string, zoneI
 	if err != nil {
 		return nil, err
 	}
+	if response == nil || response.Body == nil || response.Body.AvailableZones == nil {
+		return nil, fmt.Errorf("describe available resource returned empty response")
+	}
 	var categories []string
 	for _, az := range response.Body.AvailableZones.AvailableZone {
 		if tea.StringValue(az.ZoneId) != zoneId {
 			continue
 		}
+		if az.AvailableResources == nil {
+			continue
+		}
 		for _, res := range az.AvailableResources.AvailableResource {
 			if tea.StringValue(res.Type) != "SystemDisk" {
+				continue
+			}
+			if res.SupportedResources == nil {
 				continue
 			}
 			for _, sr := range res.SupportedResources.SupportedResource {
@@ -112,8 +121,14 @@ func DescribeSystemDiskCategories(client *ecs.Client, instanceType string, zoneI
 			if tea.StringValue(az.ZoneId) != zoneId {
 				continue
 			}
+			if az.AvailableResources == nil {
+				continue
+			}
 			for _, res := range az.AvailableResources.AvailableResource {
 				if tea.StringValue(res.Type) != "SystemDisk" {
+					continue
+				}
+				if res.SupportedResources == nil {
 					continue
 				}
 				for _, sr := range res.SupportedResources.SupportedResource {
