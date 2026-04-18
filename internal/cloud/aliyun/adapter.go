@@ -123,7 +123,7 @@ func resolvePreset(spec compute.ComputeSpaceSpec) (instancePreset, bool) {
 
 	if spec.GPU >= 2 {
 		return instancePreset{
-			instanceType:      "ecs.gn7i-c16g2.4xlarge",
+			instanceType:      "ecs.gn6i-c16g2.4xlarge",
 			defaultDisk:       "cloud_essd",
 			diskCategoryOrder: []string{"cloud_essd", "cloud_ssd", "cloud_efficiency"},
 		}, true
@@ -154,21 +154,21 @@ func resolvePreset(spec compute.ComputeSpaceSpec) (instancePreset, bool) {
 	}
 	if spec.CPU <= 4 && spec.MemoryGB <= 16 {
 		return instancePreset{
-			instanceType:      "ecs.g7.large",
+			instanceType:      "ecs.g6.large",
 			defaultDisk:       "cloud_essd",
 			diskCategoryOrder: []string{"cloud_essd", "cloud_ssd", "cloud_efficiency"},
 		}, true
 	}
 	if spec.CPU <= 8 && spec.MemoryGB <= 32 {
 		return instancePreset{
-			instanceType:      "ecs.c7.xlarge",
+			instanceType:      "ecs.c6.xlarge",
 			defaultDisk:       "cloud_essd",
 			diskCategoryOrder: []string{"cloud_essd", "cloud_ssd", "cloud_efficiency"},
 		}, true
 	}
 	if spec.CPU <= 16 && spec.MemoryGB <= 64 {
 		return instancePreset{
-			instanceType:      "ecs.r7.2xlarge",
+			instanceType:      "ecs.r6.2xlarge",
 			defaultDisk:       "cloud_essd",
 			diskCategoryOrder: []string{"cloud_essd", "cloud_ssd", "cloud_efficiency"},
 		}, true

@@ -1,0 +1,11 @@
+profiles:
+- name: test-volcen-gpu
+  provider: volcengine
+  region_id: cn-beijing
+  zone_id: cn-beijing-a
+  network:
+    security_group_id: sg-2f83bdbv46qdc4f4pzywzmv7h
+    vswitch_id: vpc-2f83bcy1wecjk4f4pzznm2im4
+  ssh:
+    user: root
+    port: 22
